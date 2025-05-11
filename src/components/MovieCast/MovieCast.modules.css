@@ -1,0 +1,50 @@
+.castList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+  margin-top: 20px;
+}
+
+.castItem {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  width: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.castItem:hover {
+  transform: translateY(-4px);
+}
+
+.castImage {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+}
+
+.castInfo {
+  padding: 10px;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 0 0 4px;
+}
+
+.character {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 0;
+}
+
+.message {
+  font-style: italic;
+  color: #aaa;
+  padding: 20px;
+}
