@@ -5,16 +5,17 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { fetchMovieDetails } from '../tmdb-api';
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const goBackBtn = location.state?.from || '/movies';
+  const goBackBtnRef = useRef(location.state?.from || '/movies');
 
   useEffect(() => {
     async function getMovie() {
@@ -36,7 +37,7 @@ export default function MovieDetailsPage() {
       <button
         type="button"
         className="goBackBtn"
-        onClick={() => navigate(goBackBtn)}
+        onClick={() => navigate(goBackBtnRef.current)}
       >
         Go back
       </button>
@@ -44,17 +45,22 @@ export default function MovieDetailsPage() {
       <div className="movieDetailsContainer">
         <img
           className="moviePoster"
-          src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+          src={
+            movieDetails.poster_path
+              ? `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`
+              : '/placeholder.jpg'
+          }
           alt={movieDetails.title}
         />
 
         <div className="movieInfo">
           <h1>{movieDetails.title}</h1>
           <p>
-            <strong>Overview:</strong> {movieDetails.overview}
+            <strong>Overview:</strong>
+            {movieDetails.overview || 'No overview available.'}
           </p>
           <p>
-            <strong>Release date:</strong> {movieDetails.release_date}
+            <strong>Release date:</strong> {movieDetails.release_date || ''}
           </p>
           <p>
             <strong>Rating:</strong> {movieDetails.vote_average} / 10
@@ -62,14 +68,17 @@ export default function MovieDetailsPage() {
 
           <ul className="detailsLinks">
             <li>
-              <Link to={`/movies/${movieId}/cast`} state={{ from: goBackBtn }}>
+              <Link
+                to={`/movies/${movieId}/cast`}
+                state={{ from: goBackBtnRef.current }}
+              >
                 Cast
               </Link>
             </li>
             <li>
               <Link
                 to={`/movies/${movieId}/reviews`}
-                state={{ from: goBackBtn }}
+                state={{ from: goBackBtnRef.current }}
               >
                 Reviews
               </Link>
